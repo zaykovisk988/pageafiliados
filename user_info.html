@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Informações do usuário</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto Condensed', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to right, #f58f00, #e50045);
+        }
+        #container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: rgb(255, 255, 255);
+            border-radius: 10px;
+            box-shadow: 0 4px 8px 0 rgba(255, 99, 99, 0.2);
+        }
+        h1 {
+            text-align: center;
+            color: #010101;
+        }
+        p {
+            font-size: 14px;
+            line-height: 1.5;
+            color: #171717;
+        }
+        button {
+            background-color: #9e1b63;
+            color: white;
+            padding: 4px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #3e8e41;
+        }
+        #photo {
+            display: block;
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 20px auto;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        @media (max-width: 600px) {
+            body {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <h1>Informações do usuário</h1>
+        <img id="photo" src="" alt="Foto do usuário">
+        
+        <p>Nome de usuário: <span id="username"></span></p>
+        
+        <p>Plataforma: <span id="platform"></span></p>
+        
+        <p>Link: <a id="link" href=""></a> <button id="copy-link">Copiar</button></p>
+        <p>Link Telegram: <a id="telegram-channel" href=""></a> <button id="copy-telegram-channel">Copiar</button></p>
+        <p>Saldo: R$<span id="balance"></span></p>
+        <p>Novos Usúarios: 0</p>
+        <p>Entrada na plataforma: 04/07/23</p>
+        <p>*Para trocar de plataforma Entre em contato com seu gestor</p>
+    </div>
+    <script>
+        // Substitua "login.html" pelo nome da sua página de login
+        if(!sessionStorage.getItem("logged_in")){
+            window.location.href = "index.html"
+        }
+        fetch('data.json')
+            .then(response => response.json())
+            .then(data => {
+                let user = data.find(user => user.username === sessionStorage.getItem("username"))
+                document.getElementById("photo").src = user.photo
+                document.getElementById("platform").innerHTML = user.plataforma
+                document.getElementById("username").innerHTML = user.username
+                document.getElementById("link").innerHTML = user.link
+                document.getElementById("link").href = user.link
+                document.getElementById("telegram-channel").innerHTML = user.telegram_channel
+                document.getElementById("telegram-channel").href = user.telegram_channel
+                document.getElementById("balance").innerHTML = user.saldo
+            })
+
+        document.getElementById("copy-link").addEventListener("click", function(){
+            navigator.clipboard.writeText(document.getElementById("link").getAttribute("href"))
+        })
+
+        document.getElementById("copy-telegram-channel").addEventListener("click", function(){
+            navigator.clipboard.writeText(document.getElementById("telegram-channel").getAttribute("href"))
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Editar dados</title>
+</head>
+<body>
+    <h1>Editar dados</h1>
+    <form id="edit-form">
+        <label for="username">Nome de usuário:</label><br>
+        <input type="text" id="username" name="username"><br>
+        <label for="password">Senha:</label><br>
+        <input type="password" id="password" name="password"><br>
+        <label for="link">Link:</label><br>
+        <input type="text" id="link" name="link"><br>
+        <label for="telegram-channel">Canal do Telegram:</label><br>
+        <input type="text" id="telegram-channel" name="telegram-channel"><br>
+        <label for="photo">Foto:</label><br>
+        <input type="text" id="photo" name="photo"><br>
+        <label for="platform">Plataforma:</label><br>
+        <input type="text" id="platform" name="platform"><br>
+        <label for="balance">Saldo:</label><br>
+        <input type="number" id="balance" name="balance"><br><br>
+        <input type="submit" value="Salvar">
+    </form> 
+    <p id="message"></p>
+    <script>
+        let data = []
+        fetch('data.json')
+            .then(response => response.json())
+            .then(jsonData => {
+                data = jsonData
+            })
+
+        document.getElementById("edit-form").addEventListener("submit", function(event){
+            event.preventDefault()
+            let username = document.getElementById("username").value
+            let user = data.find(user => user.username === username)
+            if(user){
+                user.password = document.getElementById("password").value
+                user.link = document.getElementById("link").value
+                user.telegram_channel = document.getElementById("telegram-channel").value
+                user.photo = document.getElementById("photo").value
+                user.plataforma = document.getElementById("platform").value
+                user.saldo = parseFloat(document.getElementById("balance").value)
+                document.getElementById("message").innerHTML = "Dados salvos com sucesso!"
+            } else {
+                document.getElementById("message").innerHTML = "Nome de usuário não encontrado"
+            }
+        })
+    </script>
+</body>
+</html>
